@@ -1,0 +1,79 @@
+{
+    "distric": {
+        "Ampara": {
+            "province": "Eastern" 
+        },
+        "Anuradhapura": {
+            "province": "North Central"
+        },
+        "Badulla": {
+            "province": "Uva"
+        },
+        "Batticaloa": {
+            "province": "Eastern"
+        },
+        "Colombo": {
+            "province": "Western"
+        },
+        "Galle": {
+            "province": "Southern"
+        },
+        "Gampaha": {
+            "province": "Western"
+        },
+        "Hambantota": {
+            "province": "Southern"
+        },
+        "Jaffna": {
+            "province": "Northern"
+        },
+        "Kalutara": {
+            "province": "Western"
+        },
+        "Kandy": {
+            "province": "Central"
+        },
+        "Kegalle": {
+            "province": "Sabaragamuwa"
+        },
+        "Kilinochchi": {
+            "province": "Northern"
+        },
+        "Kurunegala": {
+            "province": "North Western"
+        },
+        "Mannar": {
+            "province": "Northern"
+        },
+        "Matale": {
+            "province": "Central"
+        },
+        "Matara": {
+            "province": "Southern"
+        },
+        "Moneragala": {
+            "province": "Uva"
+        },
+        "Mullaitivu": {
+            "province": "Northern"
+        },
+        "Nuwara Eliya": {
+            "province": "Central"
+        },
+        "Polonnaruwa": {
+            "province": "North Central"
+        },
+        "Puttalam": {
+            "province": "North Western"
+        },
+        "Ratnapura": {
+            "province": "Sabaragamuwa"
+        },
+        "Trincomalee": {
+            "province": "Eastern"
+        },
+        "Vavuniya": {
+            "province": "Northern"
+        }
+    }
+}
