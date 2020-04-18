@@ -1,6 +1,4 @@
 import React from 'react';
-import QuestionForm from '../views/surveys/_questionscreen';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class NavbarComponent extends React.Component {
     render() {
@@ -26,11 +24,12 @@ class NavbarComponent extends React.Component {
                             </div>
 
                             <ul className="main-nav nav navbar-nav navbar-right">
-                                <li><a href="index.html">Home</a></li>
+                                <li><a href="/home">Home</a></li>
                                 <li><a href="#about">About</a></li>
                                 <li><a href="#service">Services</a></li>
                                 <li><a href="#team">Team</a></li>
-                                <li><Link to="/survey">Survey</Link></li>
+                                <li><a href="/survey">Survey</a></li>
+                                <li><a href="/map">Heat Map</a></li>
                                 <li><a href="#contact">Contact</a></li>
                             </ul>
 
@@ -41,5 +40,5 @@ class NavbarComponent extends React.Component {
         );
     }
 }
-
+ 
 export default NavbarComponent;
