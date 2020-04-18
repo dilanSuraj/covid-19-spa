@@ -7,6 +7,7 @@ import ServiceComponent from '../../_subcomponents/_services';
 import ContactComponent from '../../_subcomponents/_contactus';
 import FooterComponent from '../../_subcomponents/_footer';
 import TeamComponent from '../../_subcomponents/_team';
+import { Link } from 'react-router-dom';
 
 class HomeScreen extends Component {
 
@@ -30,9 +31,9 @@ class HomeScreen extends Component {
                                             <h1 className="white-text main-heading">#Stay Home</h1>
                                             <h1 className="white-text main-heading">#Stay Safe</h1>
                                             <p className="white-text">When the world is running down, you make the best of what's still around.</p>
-                                            <button className="main-btn">
+                                            <Link to="/survey"><button className="main-btn">
                                                 Lets fill the form <FontAwesomeIcon icon={faArrowAltCircleRight} />
-                                            </button>
+                                            </button></Link>
                                         </div>
                                     </div>
 
