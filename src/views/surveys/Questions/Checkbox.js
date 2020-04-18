@@ -55,14 +55,13 @@ class CheckboxScreen extends Component {
 
     render() {
         const { optionList } = this.props.questionPropObj;
-        console.log("Q"+JSON.stringify(this.props.questionPropObj))
         return (
             <React.Fragment>
                 <FormGroup onChange={this.handleChange} required={this.props.questionPropObj.required}>
                     {
                         optionList.map((item, key) => (
-                            <div>
-                                <Label key={key}>
+                            <div key={key}>
+                                <Label >
                                     {key + 1}.<span /> <Checkbox name={item.name}
                                         checked={item.isChecked}
                                         key={item.questionAnswerId}
