@@ -10,6 +10,7 @@ import FooterComponent from '../../_subcomponents/_footer';
 import { Button, Box } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons'
+import LocationQuestion from './Questions/Locations';
 class QuestionForm extends React.Component {
 
     constructor(props) {
@@ -173,9 +174,9 @@ class QuestionForm extends React.Component {
     render() {
         const { questionList, responseList } = this.state;
         return (
-            
+
             <React.Fragment>
-                <body className="bg-img-other-pages" style={{ backgroundImage: "url('./img/surveybgimg.jpeg')", color: "white" }}>
+                <div className="bg-img-other-pages" style={{ backgroundImage: "url('./img/surveybgimg.jpeg')", color: "white" }}>
                     <div>
 
                         <OtherPageNavBarComponent />
@@ -224,18 +225,32 @@ class QuestionForm extends React.Component {
                                                                                             questionPropObj={question} />
                                                                                     </FormGroup>
                                                                                     :
-                                                                                    <FormGroup row className="my-0" style={{ marginLeft: "4%" }} >
-                                                                                        <Input type="textarea"
-                                                                                            id="questionLineText"
-                                                                                            placeholder="Enter your answer"
-                                                                                            required={question.required}
-                                                                                            questionPropObj={question}
-                                                                                            onChange={(e) => {
-                                                                                                e.preventDefault();
-                                                                                                this.handleOnChange(question.questionId, [e.target.value], [e.target.value])
-                                                                                            }}
-                                                                                        />
-                                                                                    </FormGroup>
+                                                                                    <>
+                                                                                        {
+                                                                                            (CONSTANTS.questionTypes.LOCATION === question.type)
+                                                                                                ?
+                                                                                                <FormGroup row className="my-0" style={{ marginLeft: "4%" }} >
+                                                                                                    <LocationQuestion
+                                                                                                        handleOnNext={this.handleOnNext}
+                                                                                                        responseList={responseList}
+                                                                                                        questionPropObj={question} />
+                                                                                                </FormGroup>
+                                                                                                :
+                                                                                                <FormGroup row className="my-0" style={{ marginLeft: "4%" }} >
+                                                                                                    <Input type="textarea"
+                                                                                                        id="questionLineText"
+                                                                                                        placeholder="Enter your answer"
+                                                                                                        required={question.required}
+                                                                                                        questionPropObj={question}
+                                                                                                        onChange={(e) => {
+                                                                                                            e.preventDefault();
+                                                                                                            this.handleOnChange(question.questionId, [e.target.value], [e.target.value])
+                                                                                                        }}
+                                                                                                    />
+                                                                                                </FormGroup>
+                                                                                        }
+                                                                                    </>
+
 
                                                                             )
                                                                     }
@@ -250,27 +265,23 @@ class QuestionForm extends React.Component {
                                                 display="flex"
                                                 alignItems="center"
                                                 justifyContent="center"
-                                                
+
                                             >
-                                                <Button variant="contained" color="secondary" style={{ fontSize: "100%", margin:"4%" }}>
-                                                 Submit Answers <FontAwesomeIcon icon={faArrowAltCircleRight} />
-                                               </Button>
+                                                <Button variant="contained" color="secondary" style={{ fontSize: "100%", margin: "4%" }}>
+                                                    Submit Answers <FontAwesomeIcon icon={faArrowAltCircleRight} />
+                                                </Button>
                                             </Box>
 
-                                            
+
                                         </Card>
 
                                     )
                                     :
-                                    (
-                                        <div>
-                                            No Questions Found
-                                        </div>
-                                    )
+                                    null
                             )
                         }
                     </div>
-                </body>
+                </div>
                 <footer>
                     <FooterComponent />
                 </footer>
