@@ -4,30 +4,35 @@ class OtherPageNavBarComponent extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <nav id="nav" className="navbar nav-transparent">
-                    <div className="container">
-                        <div className="navbar-header">
-                            <div className="navbar-brand">
-                                <a href="index.html">
-                                    <img className="logo" src="img/logo.png" alt="logo" />
-                                    <img className="logo-alt" src="img/logo-alt.png" alt="logo" />
-                                </a>
-                            </div>
+                <header id="header">
 
-                            <div className="nav-collapse">
-                                <span></span>
+                    <div id="topbar">
+                        <div className="container">
+                            <div className="social-links">
+                                <a href="#" className="twitter"><i className="fa fa-twitter"></i></a>
+                                <a href="#" className="facebook"><i className="fa fa-facebook"></i></a>
+                                <a href="#" className="linkedin"><i className="fa fa-linkedin"></i></a>
+                                <a href="#" className="instagram"><i className="fa fa-instagram"></i></a>
                             </div>
                         </div>
+                    </div>
 
-                        <ul className="main-nav nav navbar-nav navbar-right">
+                    <div className="container">
+
+                        <div className="logo float-left">
+                            <h1 className="text-light"><a href="/" className="scrollto"><span>COVID-19</span></a></h1>
+                        </div>
+
+                        <nav className="main-nav float-right d-none d-lg-block">
+                            <ul>
                             <li><a href="/">Home</a></li>
                             <li><a href="/survey">Survey</a></li>
-                        </ul>
+                            </ul>
 
+                        </nav>
                     </div>
-                </nav>
-
-            </React.Fragment>
+                </header>
+          </React.Fragment>
         );
     }
 }

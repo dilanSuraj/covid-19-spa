@@ -13,13 +13,11 @@ class RadioButton extends Component {
     handleChange = (e) => {
         try {
             e.preventDefault();
-            let index = 0;
             this.setState({
                 checkedAnswer: e.target.value
             })
-            this.props.handleOnNext(this.props.questionPropObj.questionId, [e.target.value], [e.target.name])
+            this.props.handleRadioChecked(this.props.questionPropObj.questionId, [e.target.value], [e.target.name])
         } catch (error) {
-            // this.props.handleSubmitErrors();
         }
 
     }
@@ -54,22 +52,6 @@ class RadioButton extends Component {
         })
 
         this.getCheckedAnswer(this.props.questionPropObj.questionId)
-        // if (!this.props.getErrors()) {
-        //     this.setState({
-        //         questionObj: this.props.questionPropObj,
-        //         optionList: this.props.responseList
-        //     })
-
-        //     this.getCheckedAnswer(this.props.questionPropObj.questionId)
-        // }
-        // else {
-        //     // this.props.moveToFinalScreen();
-        // }
-        this.setState({
-            questionObj: this.props.questionPropObj,
-            optionList: this.props.responseList
-        })
-
     }
 
     render() {

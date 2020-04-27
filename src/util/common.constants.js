@@ -1,4 +1,4 @@
-const BCONIC_SURVEY_URI = 'http://4c4c5766.ngrok.io/';
+const BCONIC_SURVEY_URI = 'http://12944887.ngrok.io/';
 const USER_API = 'api/';
 const AUTH_API = 'auth/';
 const SURVEY_END_POINT = 'surveys';
@@ -6,6 +6,7 @@ const ANSWER_END_POINT = 'answers';
 const SUMMARY_END_POINT = 'summarries';
 const QUESTION_END_POINT = 'questions';
 const SURVEY_ID = "23670316-bd02-4b9a-8afd-7a56ab164808";
+const MAPDATA_URI = "'http://s3-us-west-2.amazonaws.com/worldbank-srilanka/";
 
 const questionTypes = {
     CHECKBOX : "CHECKBOX",
@@ -47,6 +48,7 @@ const HEADER_INFO = {
 }
 
 module.exports = {
+    MAPDATA_URI,
     LOCATION_SEQUENCE,
     ROUTE_COUNTRY,
     ROUTE_PROVINCE,

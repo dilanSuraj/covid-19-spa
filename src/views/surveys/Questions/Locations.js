@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Label, Dropdown, DropdownItem, DropdownMenu, Input } from 'reactstrap';
+import { Label, Input } from 'reactstrap';
 import { RadioGroup, Radio, TextField } from '@material-ui/core';
 import CONSTANTS from '../../../util/common.constants'
 import mapDataController from '../../../util/controller/mapData'
-import { Autocomplete } from '@material-ui/lab'
-import Select from 'react-select';
+
 class LocationQuestion extends Component {
 
     state = {
@@ -18,30 +17,40 @@ class LocationQuestion extends Component {
         selectedAnswerList: new Map()
     }
 
-    handleChange = async (e, locationType) => {
+    handleChange = async (e, locationId) => {
         try {
             e.preventDefault();
-            this.state.isAcknowledged.set(locationType, e.target.value)
-            // this.forceUpdate()
-            this.isComponentNeedToUpdate();
-
+            let isAcknowledged_ = this.state.isAcknowledged;
+            isAcknowledged_.set(locationId, e.target.value)
+            let selectedAnswerListTmp = this.state.selectedAnswerList;
+            let selectedLocationTmp = selectedAnswerListTmp.get(locationId);
+            selectedLocationTmp.isAcknowledged = e.target.value;
+            selectedAnswerListTmp.set(locationId, selectedLocationTmp);
+            this.handleLocations(selectedAnswerListTmp);
+            this.setState({
+                selectedAnswerList: selectedAnswerListTmp,
+                isAcknowledged: isAcknowledged_
+            })
         } catch (error) {
-            console.log("Error occurred")
         }
 
     }
 
-    isComponentNeedToUpdate = () => {
-        let prevStatOnChnaged = this.state.isLocationChanged
-        this.setState({
-            isLocationChanged: !prevStatOnChnaged
-        })
+    handleLocations = (selectedLocations) => {
+        this.props.handleLocations(selectedLocations);
     }
 
-    onSelect = async (option, locationType) => {
+    onSelect = async (location, locationType) => {
         let locationIndex = this.state.locationTypeList.indexOf(locationType.id)
-        this.state.selectedAnswerList.set(locationType.id, option);
-        await this.getLocationBasedOnType(this.state.locationTypeList[locationIndex + 1], option);
+        let selectedAnswerListTmp = this.state.selectedAnswerList;
+        let selectedLocationTmp = selectedAnswerListTmp.get(locationType.id);
+        selectedLocationTmp.location = location;
+        selectedAnswerListTmp.set(locationType.id, selectedLocationTmp);
+        this.setState({
+            selectedAnswerList: selectedAnswerListTmp
+        })
+        this.handleLocations(selectedAnswerListTmp);
+        await this.getLocationBasedOnType(this.state.locationTypeList[locationIndex + 1], location);
     }
 
 
@@ -69,11 +78,11 @@ class LocationQuestion extends Component {
     getLocationBasedOnType = async (locationType, option) => {
         let list = await mapDataController.fetchBasedOnLocationType(locationType, option);
         if (list !== null) {
-            this.state.locationList.set(locationType, list)
-            console.log(locationType)
-            console.log(option)
-            console.log(this.state.locationList.get(locationType))
-            console.log(JSON.stringify(list))
+            let locationListTmp = this.state.locationList;
+            locationListTmp.set(locationType, list);
+            this.setState({
+                locationList: locationListTmp
+            })
         }
     }
     getlocationTypeList = () => {
@@ -97,7 +106,10 @@ class LocationQuestion extends Component {
         for (let locationType of CONSTANTS.LOCATION_SEQUENCE) {
             mapList.set(locationType.id, "false")
             locationMapList.set(locationType.id, [])
-            selectedAnswerList.set(locationType.id, '')
+            selectedAnswerList.set(locationType.id, {
+                location: '',
+                isAcknowledged: "false"
+            })
         }
         this.setState({
             isAcknowledged: mapList,
@@ -129,10 +141,14 @@ class LocationQuestion extends Component {
         const locationSequence = CONSTANTS.LOCATION_SEQUENCE;
         return (
             <React.Fragment>
+                <div class="ui cards">
                 {
                     locationSequence.map((location, key) => (
                         (locationTypeList.includes(location.id)) ?
-                            <div key={key}>
+                            <a class="red card" key={key} style={{
+                                padding:"5%",
+                                
+                            }}>
 
                                 <Label>
                                     Based on {location.name} ?
@@ -163,10 +179,10 @@ class LocationQuestion extends Component {
                                 {
                                     (this.state.isAcknowledged.get(location.id) === "true")
                                         ?
-                                        <div style={{width:"25%"}}>
-                                            <Input type="select" name="select" id="select"  onChange={(e) => {
+                                        <div >
+                                            <Input type="select" name="select" id="select" onChange={(e) => {
                                                 this.onSelect(e.target.value, location)
-                                            }} >                                                                         
+                                            }} >
                                                 {
                                                     this.state.locationList.get(location.id).map((location_, key) => {
                                                         return <option key={key} value={JSON.stringify(location_)}>{location_.name}</option>
@@ -178,12 +194,13 @@ class LocationQuestion extends Component {
                                         null
                                 }
 
-                            </div>
+                            </a>
                             :
                             null
 
                     ))
                 }
+                </div>
             </React.Fragment>
         );
     }

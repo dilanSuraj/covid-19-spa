@@ -31,7 +31,7 @@ class CheckboxScreen extends Component {
             })
             this.forceUpdate();
         } catch (error) {
-            // this.props.handleSubmitErrors()
+            
         }
 
     }

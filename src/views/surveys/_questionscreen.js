@@ -19,15 +19,15 @@ class QuestionForm extends React.Component {
         this.state = {
             questionList: [],
             responseList: [],
-            checkedList: [],
+            selectedtLocations: []
         }
 
     }
 
-    prepareResponseList = () => {
+    prepareResponseList = (questionObjList) => {
 
         let responeList_ = [];
-        for (let questionObj of this.state.questionObjList) {
+        for (let questionObj of questionObjList) {
             let responseObj = {
                 questionId: "",
                 questionName: "",
@@ -46,41 +46,44 @@ class QuestionForm extends React.Component {
         });
     }
 
+    handleLocations = (locationList) => {
+        if (locationList !== null) {
+            this.setState({
+                selectedtLocations: locationList
+            })
+        }
+    }
+
     handleOnChange = (questionId, answer, value) => {
         let index = 0;
-        for (let responseObj of this.state.responseList) {
+        let list_ = this.state.responseList;
+        for (let responseObj of list_) {
             if (responseObj.questionId === questionId) {
-                this.state.responseList[index].answer = answer;
-                this.state.responseList[index].value = value;
-                this.forceUpdate();
+                list_[index].answer = answer;
+                list_[index].value = value;
+
             }
             index++;
         }
-        index = 0;
-    }
-
-    setValue = (value) => {
         this.setState({
-            score: value
+            responseList: list_
         })
-    }
-
-    getValue = () => {
-        let score_ = parseFloat(this.state.score)
-        return Math.floor(score_)
     }
 
     handleCheckBoxList = (questionObj) => {
         let list_ = this.state.questionObjList;
         let index = 0;
-        for (let questionObj_ of list_) {
+        for (let questionObj_ of this.state.questionObjList) {
             if (questionObj.questionId === questionObj_.questionId) {
-                this.state.questionObjList[index] = questionObj;
+                list_[index] = questionObj;
                 break;
             }
             index++;
         }
-        return this.state.questionObjList[index];
+        this.setState({
+            questionObjList: list_
+        })
+        return list_[index];
     }
 
     prepareCheckboxAnswerList = (answerList) => {
@@ -93,9 +96,7 @@ class QuestionForm extends React.Component {
     }
 
     handleSubmitErrors = () => {
-        this.setState({
-            isError: true
-        })
+        console.log(this.state)
     }
 
     getQuestions = async () => {
@@ -120,7 +121,7 @@ class QuestionForm extends React.Component {
                         this.setState({
                             questionList: updatedQuestionList
                         })
-                        await this.prepareResponseList();
+                        await this.prepareResponseList(updatedQuestionList);
                     }
                 } catch (error) {
 
@@ -131,39 +132,6 @@ class QuestionForm extends React.Component {
             });
 
     }
-
-    // eligibleToNext = (questionObj) => {
-    //     let isRequired = questionObj.required;
-    //     let isEligible = true;
-    //     let numOfChecked = 0;
-    //     let questionId = questionObj.questionId;
-    //     if (isRequired && questionObj.type != CONSTANTS.questionTypes.CHECKBOX) {
-    //         for (let responseObj of this.props.responseList) {
-    //             if (questionId === responseObj.questionId) {
-    //                 if (responseObj.answer.length == 0) {
-    //                     isEligible = false;
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     else if (isRequired && questionObj.type === CONSTANTS.questionTypes.CHECKBOX) {
-    //         for (let responseObj of this.props.responseList) {
-    //             if (questionId === responseObj.questionId) {
-    //                 for (let answerObj of responseObj.answer) {
-    //                     if (answerObj.isChecked) {
-    //                         numOfChecked++;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         if (numOfChecked == 0) {
-    //             isEligible = false;
-    //         }
-    //     }
-    //     return isEligible;
-    // }
 
     componentDidMount() {
 
@@ -176,28 +144,34 @@ class QuestionForm extends React.Component {
         return (
 
             <React.Fragment>
-                <div className="bg-img-other-pages" style={{ backgroundImage: "url('./img/surveybgimg.jpeg')", color: "white" }}>
+                <OtherPageNavBarComponent />
+                <div className="bg-img-other-pages" style={{ color: "black", fontFamily:"Garamond", fontSize:"18px" }} >
                     <div>
 
-                        <OtherPageNavBarComponent />
+
+                        <div style={{ paddingTop: "10%" }} />
                         {
                             (
                                 questionList.length > 0
                                     ?
                                     (
-                                        <Card>
+                                        <Card style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+
+                                        }}>
                                             {
                                                 (questionList.map((question, idx) => {
 
                                                     return (<Row key={idx} style={{ paddingTop: "2%" }}>
                                                         <Col xs="12">
-                                                            <Card >
+                                                            <Card raised outline color="success">
                                                                 <CardContent>
 
                                                                     <FormGroup row className="my-0">
                                                                         <Col xs="12">
                                                                             <FormGroup>
-                                                                                <Label htmlFor="name" style={{ marginLeft: "5%" }} ><strong>Question :</strong>
+                                                                                <Label htmlFor="name" style={{ marginLeft: "5%" }} className="scrollto"><strong>Question :</strong>
                                                                                     {question.name}</Label>
                                                                             </FormGroup>
 
@@ -220,7 +194,7 @@ class QuestionForm extends React.Component {
                                                                                     ?
                                                                                     <FormGroup row className="my-0" style={{ marginLeft: "4%" }} >
                                                                                         <RadioButtonScreen
-                                                                                            handleOnNext={this.handleOnNext}
+                                                                                            handleRadioChecked={this.handleOnChange}
                                                                                             responseList={responseList}
                                                                                             questionPropObj={question} />
                                                                                     </FormGroup>
@@ -231,7 +205,7 @@ class QuestionForm extends React.Component {
                                                                                                 ?
                                                                                                 <FormGroup row className="my-0" style={{ marginLeft: "4%" }} >
                                                                                                     <LocationQuestion
-                                                                                                        handleOnNext={this.handleOnNext}
+                                                                                                        handleLocations={this.handleLocations}
                                                                                                         responseList={responseList}
                                                                                                         questionPropObj={question} />
                                                                                                 </FormGroup>
@@ -267,7 +241,7 @@ class QuestionForm extends React.Component {
                                                 justifyContent="center"
 
                                             >
-                                                <Button variant="contained" color="secondary" style={{ fontSize: "100%", margin: "4%" }}>
+                                                <Button variant="contained" color="secondary" style={{ fontSize: "100%", margin: "4%" }} onClick={() => this.handleSubmitErrors()}>
                                                     Submit Answers <FontAwesomeIcon icon={faArrowAltCircleRight} />
                                                 </Button>
                                             </Box>
